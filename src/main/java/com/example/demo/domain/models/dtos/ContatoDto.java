@@ -1,11 +1,13 @@
-package com.example.demo.domain.models.entities;
+package com.example.demo.domain.models.dtos;
 
 import java.util.UUID;
+
+import com.example.demo.domain.models.entities.Categoria;
 
 import lombok.Data;
 
 @Data
-public class Contato {
+public class ContatoDto {
 
 	private UUID id;
 	private String nome;

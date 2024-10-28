@@ -14,11 +14,9 @@ public class ConnectionFactory {
 			var pass = "password";
 			
 			return DriverManager.getConnection(host, user, pass);
-			
-		} catch (Exception e) {
-			System.out.println("\nFalha ao conectar com o banco de dados.");
-			System.out.println(e.getMessage());
-			
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
