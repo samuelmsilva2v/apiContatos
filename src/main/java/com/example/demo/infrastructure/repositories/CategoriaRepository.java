@@ -21,14 +21,14 @@ public class CategoriaRepository {
 		connection.close();
 	}
 
-	public void update(Categoria categoria) throws SQLException {
+	public void update(Integer id, Categoria categoria) throws SQLException {
 
 		var connectionFactory = new ConnectionFactory();
 		var connection = connectionFactory.getConnection();
 
 		var statement = connection.prepareStatement("UPDATE categoria SET nome=? WHERE id=?");
 		statement.setString(1, categoria.getNome());
-		statement.setInt(2, categoria.getId());
+		statement.setInt(2, id);
 		statement.execute();
 
 		connection.close();

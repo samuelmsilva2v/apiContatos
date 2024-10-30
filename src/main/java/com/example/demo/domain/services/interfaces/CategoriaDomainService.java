@@ -9,7 +9,7 @@ public interface CategoriaDomainService {
 
 	public String inserir(CategoriaDto dto) throws Exception;
 	
-	public String atualizar(CategoriaDto dto) throws Exception;
+	public String atualizar(Integer id, CategoriaDto dto) throws Exception;
 	
 	public String excluir(Integer id) throws Exception;
 	

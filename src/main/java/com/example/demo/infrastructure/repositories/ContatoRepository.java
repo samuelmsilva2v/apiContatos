@@ -44,7 +44,7 @@ public class ContatoRepository {
 		connection.close();
 	}
 
-	public void delete(Integer id) throws SQLException {
+	public void delete(UUID id) throws SQLException {
 
 		var connectionFactory = new ConnectionFactory();
 		var connection = connectionFactory.getConnection();
@@ -56,7 +56,7 @@ public class ContatoRepository {
 		connection.close();
 	}
 
-	public Contato findById(Integer id) throws SQLException {
+	public Contato findById(UUID id) throws SQLException {
 		
 		var connectionFactory = new ConnectionFactory();
 		var connection = connectionFactory.getConnection();

@@ -1,46 +1,82 @@
 package com.example.demo.domain.services.impl;
 
 import java.util.List;
-import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.models.dtos.ContatoDto;
+import com.example.demo.domain.models.dtos.CategoriaDto;
 import com.example.demo.domain.models.entities.Categoria;
-import com.example.demo.domain.models.entities.Contato;
-import com.example.demo.domain.services.interfaces.ContatoDomainService;
+import com.example.demo.domain.services.interfaces.CategoriaDomainService;
+import com.example.demo.infrastructure.repositories.CategoriaRepository;
 
 @Service
-public class CategoriaDomainServiceImpl implements ContatoDomainService {
+public class CategoriaDomainServiceImpl implements CategoriaDomainService {
+
+	@Autowired
+	CategoriaRepository categoriaRepository;
 
 	@Override
-	public String inserir(ContatoDto dto) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public String inserir(CategoriaDto dto) throws Exception {
+
+		var categoria = new Categoria();
+		categoria.setNome(dto.getNome());
+
+		categoriaRepository.insert(categoria);
+
+		return "Categoria cadastrada com sucesso!";
 	}
 
 	@Override
-	public String atualizar(ContatoDto dto) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public String atualizar(Integer id, CategoriaDto dto) throws Exception {
+
+		var categoria = categoriaRepository.findById(id);
+
+		if (categoria != null) {
+
+			categoria.setNome(dto.getNome());
+
+			categoriaRepository.update(id, categoria);
+
+		} else {
+
+			return "Categoria não encontrada. Verifique o ID informado.";
+		}
+
+		return "Categoria atualizada com sucesso!";
 	}
 
 	@Override
-	public String excluir(UUID id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public String excluir(Integer id) throws Exception {
+
+		var categoria = categoriaRepository.findById(id);
+
+		if (categoria != null) {
+
+			categoriaRepository.delete(id);
+
+		} else {
+
+			return "Categoria não encontrada. Verifique o ID informado.";
+		}
+
+		return "Categoria excluída com sucesso!";
 	}
 
 	@Override
-	public List<Contato> consultar() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Categoria consultarPorId(Integer id) throws Exception {
+
+		var categoria = categoriaRepository.findById(id);
+
+		return categoria;
 	}
 
 	@Override
-	public Categoria consultarPorId(UUID id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Categoria> consultar() throws Exception {
+
+		List<Categoria> categorias = categoriaRepository.findAll();
+
+		return categorias;
 	}
 
 }
