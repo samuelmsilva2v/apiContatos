@@ -4,9 +4,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.example.demo.domain.models.entities.Categoria;
 import com.example.demo.infrastructure.factories.ConnectionFactory;
 
+@Repository
 public class CategoriaRepository {
 
 	public void insert(Categoria categoria) throws SQLException {

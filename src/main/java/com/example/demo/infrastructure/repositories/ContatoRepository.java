@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.stereotype.Repository;
+
 import com.example.demo.domain.models.entities.Contato;
 import com.example.demo.infrastructure.factories.ConnectionFactory;
 
+@Repository
 public class ContatoRepository {
 
 	public void insert(Contato contato) throws SQLException {
