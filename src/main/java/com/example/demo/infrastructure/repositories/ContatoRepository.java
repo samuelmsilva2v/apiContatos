@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.domain.models.entities.Categoria;
 import com.example.demo.domain.models.entities.Contato;
 import com.example.demo.infrastructure.factories.ConnectionFactory;
 
@@ -20,7 +21,7 @@ public class ContatoRepository {
 
 		var statement = connection.prepareStatement(
 				"INSERT INTO contato (id, nome, email, telefone, categoria_id ) VALUES (?, ?, ?, ?, ?)");
-		statement.setString(1, contato.getId().toString());
+		statement.setObject(1, contato.getId());
 		statement.setString(2, contato.getNome());
 		statement.setString(3, contato.getEmail());
 		statement.setString(4, contato.getTelefone());
@@ -30,7 +31,7 @@ public class ContatoRepository {
 		connection.close();
 	}
 
-	public void update(Contato contato) throws SQLException {
+	public void update(UUID id, Contato contato) throws SQLException {
 
 		var connectionFactory = new ConnectionFactory();
 		var connection = connectionFactory.getConnection();
@@ -41,7 +42,7 @@ public class ContatoRepository {
 		statement.setString(2, contato.getEmail());
 		statement.setString(3, contato.getTelefone());
 		statement.setInt(4, contato.getCategoria().getId());
-		statement.setString(5, contato.getId().toString());
+		statement.setObject(5, id);
 		statement.execute();
 
 		connection.close();
@@ -74,11 +75,13 @@ public class ContatoRepository {
 		if(resultSet.next()) {
 			
 			contato = new Contato();
+			contato.setCategoria(new Categoria());
 			
-			contato.setId(UUID.fromString(resultSet.getString("id")));
+			contato.setId((UUID)resultSet.getObject("id"));
 			contato.setNome(resultSet.getString("nome"));
 			contato.setEmail(resultSet.getString("email"));
 			contato.setTelefone(resultSet.getString("telefone"));
+			contato.getCategoria().setId(resultSet.getInt("categoria_id"));
 		}
 		
 		connection.close();
@@ -99,11 +102,13 @@ public class ContatoRepository {
 		while(resultSet.next()) {
 			
 			var contato = new Contato();
+			contato.setCategoria(new Categoria());
 			
 			contato.setId(UUID.fromString(resultSet.getString("id")));
 			contato.setNome(resultSet.getString("nome"));
 			contato.setEmail(resultSet.getString("email"));
 			contato.setTelefone(resultSet.getString("telefone"));
+			contato.getCategoria().setId(resultSet.getInt("categoria_id"));
 			
 			contatos.add(contato);	
 		}

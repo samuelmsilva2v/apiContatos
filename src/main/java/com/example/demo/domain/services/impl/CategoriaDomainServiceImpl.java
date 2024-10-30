@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.models.dtos.CategoriaDto;
+import com.example.demo.domain.models.dtos.CategoriaRequestDto;
 import com.example.demo.domain.models.entities.Categoria;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
 import com.example.demo.infrastructure.repositories.CategoriaRepository;
@@ -17,7 +17,7 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 	CategoriaRepository categoriaRepository;
 
 	@Override
-	public String inserir(CategoriaDto dto) throws Exception {
+	public String inserir(CategoriaRequestDto dto) throws Exception {
 
 		var categoria = new Categoria();
 		categoria.setNome(dto.getNome());
@@ -28,7 +28,7 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 	}
 
 	@Override
-	public String atualizar(Integer id, CategoriaDto dto) throws Exception {
+	public String atualizar(Integer id, CategoriaRequestDto dto) throws Exception {
 
 		var categoria = categoriaRepository.findById(id);
 

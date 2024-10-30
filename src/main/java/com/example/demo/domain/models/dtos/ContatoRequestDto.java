@@ -1,13 +1,12 @@
 package com.example.demo.domain.models.dtos;
 
-import com.example.demo.domain.models.entities.Categoria;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ContatoDto {
+public class ContatoRequestDto {
 
 	@NotEmpty(message= "Por favor, digite um nome válido.")
 	private String nome;
@@ -19,6 +18,6 @@ public class ContatoDto {
 	@NotEmpty(message = "Por favor, digite um telefone válido. XX XXXXXXXXX")
 	private String telefone;
 	
-	@NotEmpty(message = "A categoria é obrigatória.")
-	private Categoria categoria;
+	@NotNull(message = "A categoria é obrigatória.")
+	private Integer categoria_id;
 }

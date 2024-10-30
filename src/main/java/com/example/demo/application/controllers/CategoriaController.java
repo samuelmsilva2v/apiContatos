@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.domain.models.dtos.CategoriaDto;
+import com.example.demo.domain.models.dtos.CategoriaRequestDto;
 import com.example.demo.domain.models.entities.Categoria;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
 
@@ -26,12 +26,12 @@ public class CategoriaController {
 	CategoriaDomainService categoriaDomainService;
 	
 	@PostMapping
-	public String post(@Valid @RequestBody CategoriaDto dto) throws Exception {
+	public String post(@Valid @RequestBody CategoriaRequestDto dto) throws Exception {
 		return categoriaDomainService.inserir(dto);
 	}
 	
 	@PutMapping("{id}")
-	public String put(@PathVariable Integer id, @Valid @RequestBody CategoriaDto dto) throws Exception {
+	public String put(@PathVariable Integer id, @Valid @RequestBody CategoriaRequestDto dto) throws Exception {
 		return categoriaDomainService.atualizar(id, dto);
 	}
 	
