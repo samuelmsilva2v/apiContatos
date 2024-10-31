@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.models.dtos.ContatoRequestDto;
 import com.example.demo.domain.models.dtos.ContatoResponseDto;
-import com.example.demo.domain.models.entities.Contato;
 import com.example.demo.domain.services.interfaces.ContatoDomainService;
 
 import jakarta.validation.Valid;
@@ -48,7 +47,7 @@ public class ContatoController {
 	}
 	
 	@GetMapping("{id}")
-	public Contato getById(@PathVariable UUID id) throws Exception {
+	public ContatoResponseDto getById(@PathVariable UUID id) throws Exception {
 		return contatoDomainService.consultarPorId(id);
 	}
 }

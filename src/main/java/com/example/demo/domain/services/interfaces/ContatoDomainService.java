@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.example.demo.domain.models.dtos.ContatoRequestDto;
 import com.example.demo.domain.models.dtos.ContatoResponseDto;
-import com.example.demo.domain.models.entities.Contato;
 
 public interface ContatoDomainService {
 
@@ -17,5 +16,5 @@ public interface ContatoDomainService {
 
 	public List<ContatoResponseDto> consultar() throws Exception;
 
-	public Contato consultarPorId(UUID id) throws Exception;
+	public ContatoResponseDto consultarPorId(UUID id) throws Exception;
 }

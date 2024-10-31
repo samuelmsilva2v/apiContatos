@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.models.dtos.CategoriaRequestDto;
-import com.example.demo.domain.models.entities.Categoria;
+import com.example.demo.domain.models.dtos.CategoriaResponseDto;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
 
 import jakarta.validation.Valid;
@@ -41,12 +41,12 @@ public class CategoriaController {
 	}
 	
 	@GetMapping
-	public List<Categoria> getAll() throws Exception {
+	public List<CategoriaResponseDto> getAll() throws Exception {
 		return categoriaDomainService.consultar();
 	}
 	
 	@GetMapping("{id}")
-	public Categoria getById(@PathVariable Integer id) throws Exception {
+	public CategoriaResponseDto getById(@PathVariable Integer id) throws Exception {
 		return categoriaDomainService.consultarPorId(id);
 	}
 }

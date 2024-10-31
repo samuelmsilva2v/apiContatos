@@ -3,7 +3,7 @@ package com.example.demo.domain.services.interfaces;
 import java.util.List;
 
 import com.example.demo.domain.models.dtos.CategoriaRequestDto;
-import com.example.demo.domain.models.entities.Categoria;
+import com.example.demo.domain.models.dtos.CategoriaResponseDto;
 
 public interface CategoriaDomainService {
 
@@ -13,7 +13,7 @@ public interface CategoriaDomainService {
 	
 	public String excluir(Integer id) throws Exception;
 	
-	public List<Categoria> consultar() throws Exception;
+	public List<CategoriaResponseDto> consultar() throws Exception;
 	
-	public Categoria consultarPorId(Integer id) throws Exception;
+	public CategoriaResponseDto consultarPorId(Integer id) throws Exception;
 }

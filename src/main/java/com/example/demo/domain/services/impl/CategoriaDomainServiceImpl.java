@@ -1,11 +1,13 @@
 package com.example.demo.domain.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.models.dtos.CategoriaRequestDto;
+import com.example.demo.domain.models.dtos.CategoriaResponseDto;
 import com.example.demo.domain.models.entities.Categoria;
 import com.example.demo.domain.services.interfaces.CategoriaDomainService;
 import com.example.demo.infrastructure.repositories.CategoriaRepository;
@@ -32,16 +34,11 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 
 		var categoria = categoriaRepository.findById(id);
 
-		if (categoria != null) {
-
-			categoria.setNome(dto.getNome());
-
-			categoriaRepository.update(id, categoria);
-
-		} else {
-
+		if (categoria == null)
 			return "Categoria não encontrada. Verifique o ID informado.";
-		}
+
+		categoria.setNome(dto.getNome());
+		categoriaRepository.update(id, categoria);
 
 		return "Categoria atualizada com sucesso!";
 	}
@@ -51,32 +48,43 @@ public class CategoriaDomainServiceImpl implements CategoriaDomainService {
 
 		var categoria = categoriaRepository.findById(id);
 
-		if (categoria != null) {
-
-			categoriaRepository.delete(id);
-
-		} else {
-
+		if (categoria == null)
 			return "Categoria não encontrada. Verifique o ID informado.";
-		}
+
+		categoriaRepository.delete(id);
 
 		return "Categoria excluída com sucesso!";
 	}
 
 	@Override
-	public Categoria consultarPorId(Integer id) throws Exception {
+	public CategoriaResponseDto consultarPorId(Integer id) throws Exception {
 
 		var categoria = categoriaRepository.findById(id);
 
-		return categoria;
+		var response = new CategoriaResponseDto();
+		response.setId(categoria.getId());
+		response.setNome(categoria.getNome());
+
+		return response;
 	}
 
 	@Override
-	public List<Categoria> consultar() throws Exception {
+	public List<CategoriaResponseDto> consultar() throws Exception {
 
 		List<Categoria> categorias = categoriaRepository.findAll();
+		
+		List<CategoriaResponseDto> response = new ArrayList<CategoriaResponseDto>();
+		
+		for(Categoria categoria : categorias) {
+			
+			var categoriaResponse = new CategoriaResponseDto();
+			categoriaResponse.setId(categoria.getId());
+			categoriaResponse.setNome(categoria.getNome());
+			
+			response.add(categoriaResponse);
+		}
 
-		return categorias;
+		return response;
 	}
 
 }

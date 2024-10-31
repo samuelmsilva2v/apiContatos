@@ -21,7 +21,7 @@ public class ContatoRepository {
 
 		var statement = connection.prepareStatement(
 				"INSERT INTO contato (id, nome, email, telefone, categoria_id ) VALUES (?, ?, ?, ?, ?)");
-		statement.setObject(1, contato.getId());
+		statement.setString(1, contato.getId().toString());
 		statement.setString(2, contato.getNome());
 		statement.setString(3, contato.getEmail());
 		statement.setString(4, contato.getTelefone());
@@ -42,7 +42,7 @@ public class ContatoRepository {
 		statement.setString(2, contato.getEmail());
 		statement.setString(3, contato.getTelefone());
 		statement.setInt(4, contato.getCategoria().getId());
-		statement.setObject(5, id);
+		statement.setString(5, id.toString());
 		statement.execute();
 
 		connection.close();
@@ -77,7 +77,7 @@ public class ContatoRepository {
 			contato = new Contato();
 			contato.setCategoria(new Categoria());
 			
-			contato.setId((UUID)resultSet.getObject("id"));
+			contato.setId(UUID.fromString(resultSet.getString("id")));
 			contato.setNome(resultSet.getString("nome"));
 			contato.setEmail(resultSet.getString("email"));
 			contato.setTelefone(resultSet.getString("telefone"));

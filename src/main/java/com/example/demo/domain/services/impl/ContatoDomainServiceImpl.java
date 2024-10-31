@@ -94,10 +94,17 @@ public class ContatoDomainServiceImpl implements ContatoDomainService {
 	}
 
 	@Override
-	public Contato consultarPorId(UUID id) throws Exception {
+	public ContatoResponseDto consultarPorId(UUID id) throws Exception {
 		
 		var contato = contatoRepository.findById(id);
 		
-		return contato;
+		var response = new ContatoResponseDto();
+		response.setId(contato.getId());
+		response.setNome(contato.getNome());
+		response.setEmail(contato.getEmail());
+		response.setTelefone(contato.getTelefone());
+		response.setCategoriaId(contato.getCategoria().getId());
+		
+		return response;
 	}
 }
