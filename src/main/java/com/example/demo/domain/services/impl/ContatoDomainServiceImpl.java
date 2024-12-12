@@ -21,7 +21,7 @@ public class ContatoDomainServiceImpl implements ContatoDomainService {
 	ContatoRepository contatoRepository;
 
 	@Override
-	public String inserir(ContatoRequestDto dto) throws Exception {
+	public ContatoResponseDto inserir(ContatoRequestDto dto) throws Exception {
 
 		var contato = new Contato();
 		contato.setCategoria(new Categoria());
@@ -33,8 +33,15 @@ public class ContatoDomainServiceImpl implements ContatoDomainService {
 		contato.getCategoria().setId(dto.getCategoria_id());
 
 		contatoRepository.insert(contato);
+		
+		var response = new ContatoResponseDto();
+		response.setId(contato.getId());
+		response.setNome(contato.getNome());
+		response.setEmail(contato.getEmail());
+		response.setTelefone(contato.getTelefone());
+		response.setCategoriaId(contato.getCategoria().getId());
 
-		return "Contato registrado com sucesso!";
+		return response;
 	}
 
 	@Override

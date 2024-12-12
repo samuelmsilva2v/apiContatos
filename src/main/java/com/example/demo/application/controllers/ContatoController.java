@@ -27,7 +27,7 @@ public class ContatoController {
 	ContatoDomainService contatoDomainService;
 	
 	@PostMapping
-	public String post(@Valid @RequestBody ContatoRequestDto dto) throws Exception {
+	public ContatoResponseDto post(@Valid @RequestBody ContatoRequestDto dto) throws Exception {
 		return contatoDomainService.inserir(dto);
 	}
 	

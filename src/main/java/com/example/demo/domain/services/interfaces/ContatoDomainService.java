@@ -8,7 +8,7 @@ import com.example.demo.domain.models.dtos.ContatoResponseDto;
 
 public interface ContatoDomainService {
 
-	public String inserir(ContatoRequestDto dto) throws Exception;
+	public ContatoResponseDto inserir(ContatoRequestDto dto) throws Exception;
 
 	public String atualizar(UUID id, ContatoRequestDto dto) throws Exception;
 

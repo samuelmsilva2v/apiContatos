@@ -1,12 +1,16 @@
 package com.example.demo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -18,6 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.demo.domain.models.dtos.CategoriaRequestDto;
+import com.example.demo.domain.models.dtos.ContatoRequestDto;
+import com.example.demo.domain.models.dtos.ContatoResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
@@ -32,6 +38,8 @@ class ApiContatosApplicationTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	private static UUID contatoId;
+
 	@Test
 	@Order(1)
 	void cadastrarCategoriaTest() throws Exception {
@@ -43,22 +51,55 @@ class ApiContatosApplicationTests {
 
 		var result = mockMvc.perform(post("/api/categorias").contentType("application/json")
 				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
-		
+
 		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		
+
 		assertTrue(content.contains("Categoria cadastrada com sucesso!"));
 	}
 
 	@Test
 	@Order(2)
 	void atualizarCategoriaTest() throws Exception {
-		fail("Não implementado");
+
+		var faker = new Faker(Locale.forLanguageTag("pt-BR"));
+
+		var request = new CategoriaRequestDto();
+		request.setNome(faker.book().genre());
+
+		var result = mockMvc.perform(put("/api/categorias/" + 1).contentType("application/json")
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		assertTrue(content.contains("Categoria atualizada com sucesso!"));
 	}
 
 	@Test
 	@Order(3)
 	void cadastrarContatoTest() throws Exception {
-		fail("Não implementado");
+
+		var faker = new Faker(Locale.forLanguageTag("pt-BR"));
+
+		var request = new ContatoRequestDto();
+		request.setNome(faker.name().fullName());
+		request.setEmail(faker.internet().emailAddress());
+		request.setTelefone(faker.number().digits(11));
+		request.setCategoria_id(1);
+
+		var result = mockMvc.perform(
+				post("/api/contatos").contentType("application/json").content(objectMapper.writeValueAsString(request)))
+				.andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		var response = objectMapper.readValue(content, ContatoResponseDto.class);
+		
+		assertNotNull(response.getId());
+		assertEquals(response.getNome(), request.getNome());
+		assertEquals(response.getEmail(), request.getEmail());
+		assertEquals(response.getTelefone(), request.getTelefone());
+		
+		contatoId = response.getId();
 	}
 
 	@Test
