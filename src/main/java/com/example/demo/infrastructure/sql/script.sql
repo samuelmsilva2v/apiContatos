@@ -1,3 +1,7 @@
+CREATE DATABASE bd_contatos;
+
+USE bd_contatos;
+
 CREATE TABLE categoria (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL
