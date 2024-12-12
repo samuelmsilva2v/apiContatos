@@ -3,7 +3,7 @@ package com.example.demo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -158,25 +158,54 @@ class ApiContatosApplicationTests {
 	@Test
 	@Order(7)
 	void consultarContatoPorIdTest() throws Exception {
-		fail("Não implementado");
+
+		var result = mockMvc.perform(get("/api/contatos/" + contatoId)).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		var response = objectMapper.readValue(content, ContatoResponseDto.class);
+
+		assertEquals(response.getId(), contatoId);
+		assertNotNull(response.getNome());
+		assertNotNull(response.getEmail());
+		assertNotNull(response.getTelefone());
 	}
 
 	@Test
 	@Order(8)
 	void consultarContatosTest() throws Exception {
-		fail("Não implementado");
+
+		var result = mockMvc.perform(get("/api/contatos")).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		var response = objectMapper.readValue(content, new TypeReference<List<ContatoResponseDto>>() {
+		});
+
+		response.stream().filter(contato -> contato.getId().equals(contatoId)).findFirst()
+				.orElseThrow(() -> new AssertionError("Contato não encontrada"));
 	}
 
 	@Test
 	@Order(9)
 	void removerContatoTest() throws Exception {
-		fail("Não implementado");
+
+		var result = mockMvc.perform(delete("/api/contatos/" + contatoId)).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		
+		assertTrue(content.contains("Contato excluído com sucesso!"));
 	}
 
 	@Test
 	@Order(10)
 	void removerCategoriaTest() throws Exception {
-		fail("Não implementado");
+		
+		var result = mockMvc.perform(delete("/api/categorias/" + 1)).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+		
+		assertTrue(content.contains("Categoria excluída com sucesso!"));
 	}
 
 }
