@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -22,8 +24,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.demo.domain.models.dtos.CategoriaRequestDto;
+import com.example.demo.domain.models.dtos.CategoriaResponseDto;
 import com.example.demo.domain.models.dtos.ContatoRequestDto;
 import com.example.demo.domain.models.dtos.ContatoResponseDto;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
@@ -93,31 +97,62 @@ class ApiContatosApplicationTests {
 		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
 		var response = objectMapper.readValue(content, ContatoResponseDto.class);
-		
+
 		assertNotNull(response.getId());
 		assertEquals(response.getNome(), request.getNome());
 		assertEquals(response.getEmail(), request.getEmail());
 		assertEquals(response.getTelefone(), request.getTelefone());
-		
+
 		contatoId = response.getId();
 	}
 
 	@Test
 	@Order(4)
 	void atualizarContatoTest() throws Exception {
-		fail("Não implementado");
+
+		var faker = new Faker(Locale.forLanguageTag("pt-BR"));
+
+		var request = new ContatoRequestDto();
+		request.setNome(faker.name().fullName());
+		request.setEmail(faker.internet().emailAddress());
+		request.setTelefone(faker.number().digits(11));
+		request.setCategoria_id(1);
+
+		var result = mockMvc.perform(put("/api/contatos/" + contatoId).contentType("application/json")
+				.content(objectMapper.writeValueAsString(request))).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		assertTrue(content.contains("Contato atualizado com sucesso!"));
 	}
 
 	@Test
 	@Order(5)
 	void consultarCategoriaPorIdTest() throws Exception {
-		fail("Não implementado");
+
+		var result = mockMvc.perform(get("/api/categorias/" + 1)).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		var response = objectMapper.readValue(content, CategoriaResponseDto.class);
+
+		assertEquals(response.getId(), 1);
+		assertNotNull(response.getNome());
 	}
 
 	@Test
 	@Order(6)
 	void consultarCategoriasTest() throws Exception {
-		fail("Não implementado");
+
+		var result = mockMvc.perform(get("/api/categorias")).andExpect(status().isOk()).andReturn();
+
+		var content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+		var response = objectMapper.readValue(content, new TypeReference<List<CategoriaResponseDto>>() {
+		});
+
+		response.stream().filter(categoria -> categoria.getId().equals(1)).findFirst()
+				.orElseThrow(() -> new AssertionError("Categoria não encontrada"));
 	}
 
 	@Test
