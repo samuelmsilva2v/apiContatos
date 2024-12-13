@@ -10,6 +10,8 @@ Este projeto é uma API RESTful desenvolvida com Spring Boot para gerenciar cont
 * PostgreSQL
 * Swagger (OpenAPI) para documentação da API
 * Lombok
+* MockMvc
+* JUnit
 
 ### Funcionalidades
 * __CRUD de Contatos:__ cadastro, consulta e atualização de contatos
@@ -68,11 +70,15 @@ Este projeto é uma API RESTful desenvolvida com Spring Boot para gerenciar cont
    git clone https://github.com/samuelmsilva2v/apiContatos.git
    cd apiContatos
 ```
-2. Instalando as dependências e compilando o projeto com Maven:
+2. Execute os testes:
+```bash
+./mvnw test
+```
+3. Instalando as dependências e compilando o projeto com Maven:
 ```bash
 ./mvnw clean install
 ```
-3. Executando a aplicação:
+4. Executando a aplicação:
 ```bash
 ./mvnw spring-boot:run
 ```
